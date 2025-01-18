@@ -1,0 +1,48 @@
+khans@DESKTOP-28F6AIO MINGW64 ~
+$ git add <filename>
+bash: syntax error near unexpected token newline'
+
+khans@DESKTOP-28F6AIO MINGW64 ~
+$ git add README.md
+fatal: not a git repository (or any of the parent directories): .git
+
+khans@DESKTOP-28F6AIO MINGW64 ~
+$ git  add .
+fatal: not a git repository (or any of the parent directories): .git
+
+khans@DESKTOP-28F6AIO MINGW64 ~
+$
+
+hans@DESKTOP-28F6AIO MINGW64 ~
+$ git  add .
+fatal: not a git repository (or any of the parent directories): .git
+
+khans@DESKTOP-28F6AIO MINGW64 ~
+$ cd ~/project1
+
+khans@DESKTOP-28F6AIO MINGW64 ~/project1 (main|MERGING)
+$ ls -a
+./  ../  .git/  README.md
+
+khans@DESKTOP-28F6AIO MINGW64 ~/project1 (main|MERGING)
+$ git add README.md
+
+khans@DESKTOP-28F6AIO MINGW64 ~/project1 (main|MERGING)
+$khans@DESKTOP-28F6AIO MINGW64 ~/project1 (main|MERGING)
+$ git commit -m "Merge remote changes from GitHub into local repository"
+[main d83dfe3] Merge remote changes from GitHub into local repository
+
+khans@DESKTOP-28F6AIO MINGW64 ~/project1 (main)
+$ git push -u origin main
+Enumerating objects: 6, done.
+Counting objects: 100% (6/6), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (4/4), 432 bytes | 432.00 KiB/s, done.
+Total 4 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To https://github.com/Khnshaaa/project1.git
+   e1ad7bc..d83dfe3  main -> main
+branch 'main' set up to track 'origin/main'.
+
+khans@DESKTOP-28F6AIO MINGW64 ~/project1 (main)
+$

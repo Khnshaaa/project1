@@ -5,6 +5,8 @@ for x in fruits:
   print(x)
   
 #2
+
+
 i = 0
 while i < 6:
   i += 1

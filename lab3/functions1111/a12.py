@@ -5,3 +5,9 @@
 #****
 #*********
 #*******
+
+def histogram(lll):
+    for num in lll:
+        print('*' * num)
+
+histogram([4, 9, 7])

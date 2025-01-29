@@ -6,5 +6,3 @@ def is_highly_rated(movie):
     return movie["imdb"] > 5.5
 for movie in movies:
     print(f'{movie["name"]}: {is_highly_rated(movie)}')
-    
-# Hello

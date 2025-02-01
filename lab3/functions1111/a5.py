@@ -1,6 +1,7 @@
 #Write a function that accepts string 
 # from user and print all permutations of that string.
 
+
 def PermutationsOfString(text):
     for i in range(len(text)):
         if len(text) == 1:
@@ -10,10 +11,7 @@ def PermutationsOfString(text):
     for i in range(len(text)):
         current = text[i]
         remaining = text[:i] + text[i+1:]
-<<<<<<< HEAD
-=======
 
->>>>>>> 42d3f254ee2045d55cfd9dcb5c79be557c1c2de6
         perms = PermutationsOfString(remaining)
 
         for j in range (len(perms)):

@@ -2,12 +2,31 @@
 # some of the functions from the above 13 tasks 
 # and try to use them.
 
-from functions1111 import is_polinderome
+from random import randint
 
-words=['apple','banana','alaala','data','elderberry','apple','banana']
-for i in words:
-    if is_polinderome(i):
-        print(i)
-    else:
-        print('not a palindrome')   
+def guessanumber():
+    print("Hello! What is your name?")
+    name = input()
+    print(f"Well, {name}, I am thinking of a number between 1 and 20.")
+    number = randint(1,20)
+    sum = 0
+    run = True
+    while run:
+        guess = int(input("Take a guess: "))
+        sum+=1
+        if guess == number:
+            run = False
+            print(f"Good job, {name}! You guessed my number in {sum} guesses!")
+            break
+        if guess>number:
+            print("Your guess is too high.")
+        else:
+            print("Your guess is too low")
+
+
+guessanumber()
+def randomator(start, end, length):
+    arr=[randint(start, end)for i in range(length)]
+    print(arr)
+randomator(1,10,10)
     

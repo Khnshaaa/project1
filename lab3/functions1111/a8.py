@@ -11,7 +11,6 @@ def spy_game(nums):
     idx = 0 
 
     for num in nums:
-        # Check if the current number matches the current sequence element
         if num == seq[idx]:
             idx += 1 
         if idx == len(seq):

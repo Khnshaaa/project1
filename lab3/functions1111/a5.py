@@ -11,6 +11,7 @@ def PermutationsOfString(text):
         current = text[i]
         remaining = text[:i] + text[i+1:]
         perms = PermutationsOfString(remaining)
+        
         for j in range (len(perms)):
             result.append(current + perms[j])
         
@@ -18,5 +19,3 @@ def PermutationsOfString(text):
 
 text = "abc"
 print(PermutationsOfString(text))
-
-#jfdjkfjkjkf

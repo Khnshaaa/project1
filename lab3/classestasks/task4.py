@@ -26,7 +26,7 @@ p1 = Point(1, 2)
 p2 = Point(4, 6)
 
 
-p1.show()  # Output: (1, 2)
-p2.show()  # Output: (4, 6)
+p1.show()  
+p2.show()
 
-print("Distance:", p1.dist(p2))  # Output: Distance: 5.0
+print("Distance:", p1.dist(p2))

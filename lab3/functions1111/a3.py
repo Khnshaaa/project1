@@ -23,6 +23,7 @@ numlegs = 94
 result = solve(numheads, numlegs)
 
 #isinstance() is used to verify that the result is a tuple, which means 
+
 # the function has returned a valid answer (the number of chickens and rabbits).
 
 if isinstance(result, tuple):

@@ -19,12 +19,12 @@ class Account:
         
     def withdraw(self, amount):
         if amount > self.balance:
-            print("Insufficient funds! Withdrawal not allowed.")
+            print("Withdrawal not allowed.")
         else:
             self.balance -= amount
             print(f"Withdrew {amount}. Remaining balance: {self.balance}")
 
 acc = Account("John", 100)
-acc.deposit(50)  # Output: Deposited 50. New balance: 150
-acc.withdraw(30)  # Output: Withdrew 30. Remaining balance: 120
-acc.withdraw(200)  # Output: Insufficient funds!
+acc.deposit(50)  
+acc.withdraw(30)  
+acc.withdraw(200)  

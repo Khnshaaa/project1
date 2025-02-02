@@ -18,9 +18,8 @@
 import random
 
 def guess_the_number():
-    # Generate a random number between 1 and 20
+
     number_to_guess = random.randint(1, 20)
-    # Initialize variables for guesses
     guess_count = 0
     guessed = False
     while not guessed:
@@ -34,5 +33,5 @@ def guess_the_number():
             print("Your guess is too high.")
         else:
             guessed = True
-            print(f"Good job! You guessed the number in {guess_count} guesses.")
+            print(f"good . You guessed the number in {guess_count} guesses.")
 guess_the_number()

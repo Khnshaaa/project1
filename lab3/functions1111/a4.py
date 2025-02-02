@@ -13,12 +13,9 @@ def is_prime(num):
     return True
 
 def filter_prime(numbers):
-    # Use the is_prime function to filter out prime numbers
     return [num for num in numbers if is_prime(num)]
 
-# Example Usage:
+
 numbers = list(map(int, input("Enter numbers :  ").split()))
-
 prime_numbers = filter_prime(numbers)
-
 print("Prime numbers:", prime_numbers)

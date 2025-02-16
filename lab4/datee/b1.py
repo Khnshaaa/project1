@@ -1,4 +1,5 @@
 #Write a Python program to subtract five days from current date.
+
 from datetime import datetime, timedelta
 current_date = datetime.today()
 new_date = current_date - timedelta(days=5)

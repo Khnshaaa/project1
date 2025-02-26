@@ -2,6 +2,7 @@
 # Function to count lines in a file
 # Write a Python program to count the number of lines in a text file.
 # Function to count lines in a file
+import os 
 
 def count_lines(filename):
     try:

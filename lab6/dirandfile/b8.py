@@ -12,7 +12,7 @@ def delete_file(file_path):
             return
         
         os.remove(file_path)
-        print(f"✅ File '{file_path}' has been deleted successfully!")
+        print(f"File '{file_path}' has been deleted successfully!")
 
     except PermissionError:
         print("Error: Permission denied!")

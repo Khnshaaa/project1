@@ -7,12 +7,14 @@
 # Sample Output:
 # Square root of 25100 after 2123 miliseconds is 158.42979517754858
 
-import math
-import time
+import math  
+import time  
 
-num = float(input("Enter the number: "))  
-delay = int(input("Enter delay in milliseconds: ")) 
+num = int(input())  
+milliseconds = int(input())  
 
-time.sleep(delay / 1000)
-result = math.sqrt(num)
-print(f"Square root of {num} after {delay} milliseconds is {result}")
+time.sleep(milliseconds / 1000)  
+
+result = math.sqrt(num) 
+print(f"Square root of {num} after {milliseconds} milliseconds is {result}")
+

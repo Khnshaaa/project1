@@ -13,7 +13,6 @@ user_tuple = tuple(
     int(x) if x.isdigit() else x 
     for x in user_input
 )
-
 result = all_elements_true(user_tuple)
 
 print(result)

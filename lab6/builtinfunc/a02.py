@@ -9,6 +9,5 @@ def count_case(s):
 
 user= input("Enter a string: ")
 upper, lower = count_case(user)
-
 print("Uppercase letters:", upper)
 print("Lowercase letters:", lower)

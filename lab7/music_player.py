@@ -30,6 +30,8 @@ if not os.path.exists(image_folder):
     exit()
 
 try:
+    background_main = pygame.image.load(os.path.join(image_folder, "bgg.png"))
+    background_main = pygame.transform.scale(background_main, (width, height))
     background = pygame.image.load(os.path.join(image_folder, "backgroundd.png"))
     playb = pygame.image.load(os.path.join(image_folder, "play.png"))
     pausb = pygame.image.load(os.path.join(image_folder, "pause.png"))
@@ -61,15 +63,15 @@ font2 = pygame.font.SysFont(None, 20)
 
 run = True
 while run:
-    screen.fill((0, 0, 0))
-
+    screen.blit(background_main, (0, 0))
+    
     bg_width, bg_height = background.get_size()
     bg_x = (width - bg_width) // 2
     bg_y = 50
     screen.blit(background, (bg_x, bg_y))
 
     bg = pygame.Surface((500, 200))
-    bg.fill((255, 255, 255))
+    bg.fill((255, 182, 193))
     screen.blit(bg, (155, 500))
 
     text2 = font2.render(os.path.basename(playlist[index]), True, (20, 20, 50))

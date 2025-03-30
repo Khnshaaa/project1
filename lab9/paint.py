@@ -1,31 +1,24 @@
 
 import pygame
-
 pygame.init()
-
 # Размеры окна
 WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Advanced Paint")
-
 # Создаем холст (фон - белый)
 canvas = pygame.Surface((WIDTH, HEIGHT))
 canvas.fill((255, 255, 255))
-
 # Настройки рисования
-current_color = (0, 0, 0)
-brush_size = 5
-mode = "draw"
-active_size = 10
-active_color = 'black'
-
-active_figure = None   # выбранная фигура (например, 'rectangle', 'circle', и т.д.)
-is_erasing = False
-painting = []
-
+current_color = (0, 0, 0)  # Цвет кисти по умолчанию
+brush_size = 5  # Размер кисти
+mode = "draw"  # Режим рисования (по умолчанию - кисть)
+active_size = 10  # Активный размер кисти
+active_color = 'black'  # Активный цвет
+active_figure = None  # Выбранная фигура (rectangle, circle и т.д.)
+is_erasing = False  # Флаг режима стирания
+painting = []  # Список для хранения нарисованных линий
 # Шрифт для UI
 font = pygame.font.SysFont('Arial', 18)
-
 drawing = False
 start_pos = None
 preview_surface = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)  # Прозрачный слой для предпросмотра
@@ -97,38 +90,35 @@ def draw_menu(size, color, erasing , active_figure):
     }
     if active_figure in figure_dict:
         pygame.draw.rect(screen, 'green', figure_dict[active_figure], 3)
-    
     return brush_list, color_rects, color_values, eraser , [rectanglee, circlee, squaree, r_triangle, triangle, rhombuss]
-
 def draw_painting(paints):
     for i in range(1, len(paints)):
         if paints[i-1][3] and paints[i][3]:
             if isinstance(paints[i][2], (int, float)):
                 pygame.draw.line(screen, paints[i][0], paints[i-1][1], paints[i][1], int(paints[i][2]) * 2)
                 pygame.draw.circle(screen, paints[i][0], paints[i][1], int(paints[i][2]))
-
-# def draw_ui():
-#     """Отображение текущего режима и инструкций."""
-#     screen.blit(font.render(f"Mode: {mode}", True, (0, 0, 0)), (10, 10))
-#     screen.blit(font.render(f"Color: {current_color}", True, (0, 0, 0)), (10, 30))
-#     instructions = [
-#         "D - Free Draw", "R - Rectangle", "C - Circle", "S - Square", "T - Triangle", "H - Right Triangle", "Y - Rhombus", "E - Eraser",
-#         "1: Red, 2: Green, 3: Blue, 4: Yellow, 5: Magenta",
-#         "Left Mouse - Draw | Right Mouse - Clear Canvas"
-#     ]
-#     for i, line in enumerate(instructions):
-#         screen.blit(font.render(line, True, (0, 0, 0)), (10, 50 + i * 20))
-
+def draw_ui():
+    instructions = [
+        "              ",
+        "              ",
+        "Press S for Square",
+        "Press Y for Rhombus",
+        "Press H for Rtriangle",
+        "Press T for Etriangle ",
+    ]
+    y = 50
+    for line in instructions:
+        instr_text = font.render(line, True, (0, 0, 0))
+        screen.blit(instr_text, (10, y))
+        y += 20
 clock = pygame.time.Clock()
 running = True
 while running:
     screen.fill((255, 255, 255))  # Очистка экрана
     screen.blit(canvas, (0, 0))  # Отображение холста
     screen.blit(preview_surface, (0, 0))  # Отображение предпросмотра
-    
     mouse = pygame.mouse.get_pos()
     left_click = pygame.mouse.get_pressed()[0]
-    
     if left_click and mouse[1] > 70:
         if last_pos:
             pygame.draw.line(screen, active_color, last_pos, mouse, active_size * 2)
@@ -145,9 +135,6 @@ while running:
     if mouse[1] > 70 :
         pygame.draw.circle(screen, active_color, mouse, active_size)
     brushes, colors, rgbs, eraser,figures  = draw_menu(active_size, active_color, is_erasing , active_figure)
-
-    # print(f"Active figure: {active_figure}, Mode: {mode}")
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -173,13 +160,6 @@ while running:
             for i in range(len(figures)):
                 if figures[i].collidepoint(event.pos):
                     active_figure = None if active_figure == figure_names[i] else figure_names[i]
-
-            # figure_names = ['rectangle', 'circle', 'eraser', 'square', 'right_triangle', 'triangle', 'rhombus']
-            # for i in range(len(figures)):
-            #     if figures[i].collidepoint(event.pos):
-            #         active_figure = None if active_figure == figure_names[i] else figure_names[i]
-        #print(f"Active figure: {active_figure}, Mode: {mode}")
-           
         if active_figure == "rectangle":
                 mode= "rectangle"
         if active_figure == "circle":
@@ -191,11 +171,9 @@ while running:
         if active_figure == "triangle":
                 mode= "triangle"
         if active_figure == "rhombus" :
-            mode = "rhombus"      
-                
+            mode = "rhombus"                
         if event.type == pygame.MOUSEBUTTONUP:
             last_pos = None
-
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_d:
                 mode = "draw"
@@ -223,7 +201,6 @@ while running:
                 current_color = (255, 255, 0)
             elif event.key == pygame.K_5:
                 current_color = (255, 0, 255)
-
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:  # Левая кнопка мыши
                 drawing = True
@@ -234,7 +211,6 @@ while running:
                     pygame.draw.circle(canvas, color, event.pos, brush_size // 2)
             elif event.button == 3:  # Правая кнопка - очистка холста
                 canvas.fill((255, 255, 255))
-
         if event.type == pygame.MOUSEMOTION and drawing:
             if mode == "draw" or mode == "eraser":
                 color = current_color if mode == "draw" else (255, 255, 255)
@@ -243,15 +219,20 @@ while running:
             else:
                 preview_surface.fill((0, 0, 0, 0))  # Очистка слоя предпросмотра
                 end_pos = event.pos
-                if mode == "rectangle":
+                if mode == "rectangle":# REcatngle 
                     rect = pygame.Rect(start_pos, (end_pos[0] - start_pos[0], end_pos[1] - start_pos[1]))
                     rect.normalize()
                     pygame.draw.rect(preview_surface, current_color + (150,), rect, brush_size)
                 elif mode == "circle":
                     radius = int(((end_pos[0] - start_pos[0]) ** 2 + (end_pos[1] - start_pos[1]) ** 2) ** 0.5)
-                    pygame.draw.circle(preview_surface, current_color + (150,), start_pos, radius, brush_size)
-                elif mode == "triangle":
-                    pygame.draw.polygon(preview_surface, current_color + (150,), [start_pos, (start_pos[0] - (end_pos[0] - start_pos[0]), end_pos[1]), end_pos], 2)
+                    pygame.draw.circle(preview_surface, current_color + (150,), start_pos, radius, brush_size)          
+                elif mode == "equilateral_triangle":
+                    size = max(abs(end_pos[0] - start_pos[0]), abs(end_pos[1] - start_pos[1]))
+                    height = (size * (3 ** 0.5)) / 2  # Высота равностороннего треугольника
+                    p1 = (start_pos[0], start_pos[1] - height / 2)  # Верхняя вершина
+                    p2 = (start_pos[0] - size / 2, start_pos[1] + height / 2)  # Левая вершина
+                    p3 = (start_pos[0] + size / 2, start_pos[1] + height / 2)  # Правая вершина
+                    pygame.draw.polygon(preview_surface, current_color + (150,), [p1, p2, p3], brush_size)
                 elif mode == "right_triangle":
                     pygame.draw.polygon(preview_surface, current_color + (150,), [start_pos, (start_pos[0], end_pos[1]), end_pos], 2)
                 elif mode == "rhombus":
@@ -265,8 +246,7 @@ while running:
                         rect.x -= size
                     if end_pos[1] < start_pos[1]:
                         rect.y -= size
-                    pygame.draw.rect(preview_surface, current_color + (150,), rect, brush_size)
-                    
+                    pygame.draw.rect(preview_surface, current_color + (150,), rect, brush_size)       
         if event.type == pygame.MOUSEBUTTONUP and drawing:
             drawing = False
             end_pos = event.pos
@@ -294,14 +274,7 @@ while running:
                     rect.y -= size
                 pygame.draw.rect(canvas, current_color, rect, brush_size)
             preview_surface.fill((0, 0, 0, 0))  # Очистка слоя предпросмотра
-
-    # Обновление экрана
-    # screen.fill(("white"))
-    
-    # screen.blit(canvas, (0, 0))
-    # screen.blit(preview_surface, (0, 0))
-    # draw_ui()
+    draw_ui()
     pygame.display.flip()
     clock.tick(60)
-
 pygame.quit()

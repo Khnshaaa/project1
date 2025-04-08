@@ -99,14 +99,12 @@ def draw_painting(paints):
                 pygame.draw.circle(screen, paints[i][0], paints[i][1], int(paints[i][2]))
 def draw_ui():
     instructions = [
-        "              ",
-        "              ",
         "Press S for Square",
         "Press Y for Rhombus",
         "Press H for Rtriangle",
         "Press T for Etriangle ",
     ]
-    y = 50
+    y =80
     for line in instructions:
         instr_text = font.render(line, True, (0, 0, 0))
         screen.blit(instr_text, (10, y))

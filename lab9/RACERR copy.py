@@ -28,6 +28,27 @@ pygame.mixer.music.play(-1)
 SPEED_INCREMENT = 1
 COINS_FOR_SPEED_UP = 5
 
+# # Функция для сброса игры
+# def reset_game():
+#     global player, enemy, coins, all_sprites, coin_count, COINS_FOR_SPEED_UP
+
+#     player = Player()
+#     enemy = Enemy()
+#     coins = pygame.sprite.Group()
+#     all_sprites = pygame.sprite.Group()
+    
+#     all_sprites.add(player)
+#     all_sprites.add(enemy)
+
+#     for _ in range(4):
+#         coin = Coin()
+#         coins.add(coin)
+#         all_sprites.add(coin)
+
+coin_count = 0
+COINS_FOR_SPEED_UP = 5
+
+
 # Классы
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -84,6 +105,9 @@ def spawn_coin():
         new_coin = Coin()
         coins.add(new_coin)
         all_sprites.add(new_coin)
+        
+        
+
 # Группы спрайтов
 player = Player()
 enemy = Enemy()
@@ -100,6 +124,11 @@ for _ in range(4):
 
 # Счётчик монет
 coin_count = 0
+health = 3  # Начальное количество жизней
+
+# Запускаем игру
+# reset_game()
+
 
 # Основной цикл игры
 clock = pygame.time.Clock()
@@ -114,9 +143,14 @@ while running:
 
     # Проверка столкновения с врагом
     if pygame.sprite.collide_rect(player, enemy):
-        print("Game Over!")
-        running = False
-
+        health= health-1
+        if health == 0 :
+        #    pygame.time.wait(5000)  # Пауза 5 секунд
+        
+        #    reset_game()  
+           running = False  
+        else:
+            enemy.rect.center = (random.choice([WIDTH//4,WIDTH//2 , 3 * WIDTH//4 ]) , -50)
     # Проверка сбора монет
     collected_coins = pygame.sprite.spritecollide(player, coins, dokill=True)
     for coin in collected_coins:
@@ -141,10 +175,12 @@ while running:
     font = pygame.font.SysFont('Arial', 24)
     coin_text = font.render(f'Coins: {coin_count}', True, (255, 255, 0))
     screen.blit(coin_text, (WIDTH - 120, 10))
+    # Отображение здоровья
+    health_text = font.render(f'Health: {health}', True, (255, 0, 0))
+    screen.blit(health_text, (10, 10))  # Рисуем здоровье в левом верхнем углу
 
     pygame.display.update()
     clock.tick(60)
 
 pygame.quit()
 sys.exit()
-

@@ -1,0 +1,163 @@
+
+
+###  Основные принципы Pygame**
+Pygame работает по принципу **игрового цикла**:  
+1. Обрабатываем события (`pygame.event.get()`).  
+2. Обновляем объекты.  
+3. Отрисовываем (`screen.blit()`, `pygame.draw.*()`).  
+4. Обновляем экран (`pygame.display.flip()` или `.update()`).  
+
+### **2️ Обработка событий** (`pygame.event.get()`)
+Пример:  
+```python
+for event in pygame.event.get():
+    if event.type == pygame.QUIT:  # Закрытие окна
+        running = False  
+    if event.type == pygame.KEYDOWN:  # Нажатие клавиши
+        if event.key == pygame.K_SPACE:
+            print("Пробел нажат!")
+    if event.type == pygame.MOUSEBUTTONDOWN:  # Клик мыши
+        print(f"Клик в {event.pos}")
+```
+ **Вопросы, которые могут задать:**  
+- Как обработать нажатие клавиши?  
+- Как узнать координаты клика?  
+
+---
+
+### **3 Отрисовка фигур (`pygame.draw`)**
+Примеры:  
+```python
+pygame.draw.rect(screen, (255, 0, 0), (50, 50, 100, 100))  # Красный квадрат
+pygame.draw.circle(screen, (0, 255, 0), (200, 200), 50)  # Зеленый круг
+pygame.draw.line(screen, (0, 0, 255), (10, 10), (300, 300), 5)  # Синяя линия
+```
+**Вопросы:**  
+- Как нарисовать круг?  
+- Как нарисовать прямоугольник?  
+
+---
+
+### **4️ Работа с текстом (`pygame.font.Font`)**
+Пример:  
+```python
+font = pygame.font.Font(None, 36)  
+text = font.render("Привет, Pygame!", True, (255, 255, 255))  
+screen.blit(text, (100, 100))  
+```
+**Вопросы:**  
+- Как вывести текст на экран?  
+- Что делает `render()`?  
+
+---
+
+### **5️ Работа с изображениями (`pygame.image.load`)**
+Пример:  
+```python
+image = pygame.image.load("sprite.png")  
+screen.blit(image, (100, 100))  
+```
+**Вопросы:**  
+- Как загрузить изображение?  
+- Как изменить размер картинки?  
+
+---
+
+### **6️ Движение объектов**
+Пример:  
+```python
+x, y = 100, 100  
+speed = 5  
+
+while True:
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_RIGHT]: x += speed  
+    if keys[pygame.K_LEFT]: x -= speed  
+    if keys[pygame.K_DOWN]: y += speed  
+    if keys[pygame.K_UP]: y -= speed  
+```
+**Вопросы:**  
+- Как передвинуть объект?  
+- Как изменить скорость движения?  
+
+---
+
+### **7️ Таймер и FPS (`pygame.time.Clock`)**
+Пример:  
+```python
+clock = pygame.time.Clock()  
+while True:
+    clock.tick(60)  # Ограничение 60 FPS
+```
+**Вопросы:**  
+- Зачем нужен `Clock()`?  
+- Как ограничить FPS?  
+
+---
+
+### **8️ Музыка и звуки (`pygame.mixer`)**
+Пример: 
+```python
+pygame.mixer.init()
+pygame.mixer.music.load("music.mp3")
+pygame.mixer.music.play()
+```
+**Вопросы:**  
+- Как запустить музыку?  
+- Как остановить звук?  
+
+---
+
+
+❓ **Что такое Pygame?**  
+**Ответ:** Pygame — библиотека для создания игр и графических приложений на Python.  
+
+❓ **Как работает цикл игры?**  
+**Ответ:**  
+1. Получаем события (`pygame.event.get()`).  
+2. Обновляем состояние объектов.  
+3. Рисуем объекты (`screen.blit()`, `pygame.draw.*()`).  
+4. Обновляем экран (`pygame.display.flip()`).  
+
+❓ **Как нарисовать круг?**  
+```python
+pygame.draw.circle(screen, (255, 0, 0), (100, 100), 50)
+```
+
+❓ **Как получить нажатую клавишу?**  
+```python
+keys = pygame.key.get_pressed()
+if keys[pygame.K_SPACE]:
+    print("Пробел нажат!")
+```
+
+❓ **Как ограничить FPS?**  
+```python
+clock = pygame.time.Clock()
+clock.tick(60)
+```
+
+❓ **Как переместить объект вправо?**  
+```python
+x += speed
+```
+
+def draw_snake():
+    for i, segment in enumerate(snake):
+        if i == 0:  # Голова
+            rotated_head = head_image
+            if direction == "RIGHT":
+                rotated_head = pygame.transform.rotate(head_image, 0)
+            elif direction == "LEFT":
+                rotated_head = pygame.transform.rotate(head_image, 180)
+            elif direction == "UP":
+                rotated_head = pygame.transform.rotate(head_image, 90)
+            elif direction == "DOWN":
+                rotated_head = pygame.transform.rotate(head_image, -90)
+            screen.blit(rotated_head, segment)
+        else:  # Тело
+            pygame.draw.rect(screen, GREEN, (segment[0], segment[1], BLOCK_SIZE, BLOCK_SIZE))
+
+
+head_image = pygame.image.load("image.png")  # Загружаем картинку головы
+head_image = pygame.transform.scale(head_image, (BLOCK_SIZE, BLOCK_SIZE))  # Масштабируем

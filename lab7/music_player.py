@@ -1,20 +1,16 @@
 import pygame
 import os  
-
 pygame.init()
-
 width, height = 800, 800
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Playlist")
 clock = pygame.time.Clock()
-
 playlist = []
 music_folder = "lab7/music_folder"
-
 if not os.path.exists(music_folder):
     print(f"Error: Folder '{music_folder}' not found.")
     exit()
-
+    
 allmusic = os.listdir(music_folder)
 for song in allmusic:
     if song.endswith(".mp3"):

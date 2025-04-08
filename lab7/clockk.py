@@ -14,7 +14,7 @@ pygame.display.set_caption("clock")
 background = pygame.image.load("lab7/imagee/clock.png") 
 fir_hand = pygame.image.load("lab7/imagee/min_hand.png")
 sec_hand = pygame.image.load("lab7/imagee/sec_hand.png")
-
+#pygame.transform.scale(image, (new_width, new_height))
 background = pygame.transform.scale(background, (width , hight )) 
 fir_hand = pygame.transform.scale(fir_hand, ( 400 , 400))  
 sec_hand = pygame.transform.scale(sec_hand, ( 400 , 400))  
@@ -35,11 +35,16 @@ while run :
     secc = t.tm_sec
     secc_angle = -secc * 6 
     minn_angle = -minn * 6 
+    #В Pygame угол поворота измеряется против часовой стрелки, 
+    # а в реальных часах стрелки двигаются по часовой стрелке.
     
     center_x , center_y = width //2 , hight //2 
-    
+    #Функция rotate_center():
+    # Поворачивает стрелку на вычисленный угол.
+    # Размещает её в центре экрана.
     rotated_sec, rect_sec = rotate_center(sec_hand, secc_angle, (center_x, center_y))
     screen.blit(rotated_sec, rect_sec.topleft)
+    #Теперь стрелка всегда поворачивается вокруг центра, оставаясь на месте.
     
     rotated_min, rect_min = rotate_center(fir_hand, minn_angle, (center_x, center_y))
     screen.blit(rotated_min, rect_min.topleft)

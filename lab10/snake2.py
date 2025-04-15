@@ -1,9 +1,9 @@
-import pygame
-import random
-import sys
-import psycopg2
+import pygame 
+import random 
+import sys   
+import psycopg2  
 
-# Настройки Pygame
+
 pygame.init()
 SCREEN_WIDTH, SCREEN_HEIGHT = 600, 400
 GRID_SIZE = 20
@@ -12,44 +12,70 @@ GRID_HEIGHT = SCREEN_HEIGHT // GRID_SIZE
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Змейка")
 
-# Подключение к БД
+
 conn = psycopg2.connect(
-    dbname='snake',  # используй своё имя БД
-    user='postgres',
+    dbname='snake',      
+    user='postgres',      
     password='12345678',
-    host='localhost'
+    host='localhost'     
 )
 cursor = conn.cursor()
 
-# Цвета
-WHITE, BLACK, RED = (255, 255, 255), (0, 0, 0), (255, 0, 0)
 
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        user_id SERIAL PRIMARY KEY,     -- уникальный id
+        user_name VARCHAR(255) UNIQUE   -- имя игрока
+    );
+""")
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS user_score (
+        id SERIAL PRIMARY KEY,          -- уникальный id записи
+        user_id INTEGER REFERENCES users(user_id),  -- внешний ключ на пользователя
+        score INTEGER,                  -- счёт
+        level INTEGER                   -- уровень
+    );
+""")
+conn.commit()
+
+# --- Цвета ---
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED   = (255, 0, 0)
+
+# --- Функция получения или создания игрока ---
 def get_or_create_user(username):
     cursor.execute("SELECT user_id FROM users WHERE user_name = %s;", (username,))
     row = cursor.fetchone()
     if row:
+        # Если игрок найден, получаем последний сохранённый уровень
         user_id = row[0]
         cursor.execute("SELECT level FROM user_score WHERE user_id = %s ORDER BY id DESC LIMIT 1;", (user_id,))
         level_row = cursor.fetchone()
         return user_id, level_row[0] if level_row else 1
     else:
+        # Если игрок новый, создаём запись
         cursor.execute("INSERT INTO users (user_name) VALUES (%s) RETURNING user_id;", (username,))
         user_id = cursor.fetchone()[0]
         conn.commit()
         return user_id, 1
 
+# --- Сохраняем счёт и уровень в таблицу ---
 def save_score(user_id, score, level):
     cursor.execute("INSERT INTO user_score (user_id, score, level) VALUES (%s, %s, %s);", (user_id, score, level))
     conn.commit()
 
+# --- Класс Змейка ---
 class Snake:
     def __init__(self):
-        self.body = [(GRID_WIDTH // 2, GRID_HEIGHT // 2)]
-        self.direction = (1, 0)
+        self.body = [(GRID_WIDTH // 2, GRID_HEIGHT // 2)]  # начальное положение змейки
+        self.direction = (1, 0)  # направление движения
         self.player_name = ""
         self.user_id = None
-        self.paused = False
+        self.paused = False  # для паузы
 
+    # Получаем имя игрока и уровень
     def get_player_name(self):
         input_box = pygame.Rect(SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 - 25, 200, 50)
         font = pygame.font.Font(None, 32)
@@ -77,6 +103,7 @@ class Snake:
                         else:
                             text += event.unicode
 
+            # Отрисовка поля ввода имени
             screen.fill(BLACK)
             txt_surface = font.render(text, True, color)
             input_box.w = max(200, txt_surface.get_width() + 10)
@@ -88,6 +115,7 @@ class Snake:
         self.user_id, loaded_level = get_or_create_user(self.player_name)
         return loaded_level
 
+    # Движение змейки
     def move(self):
         global score, level, speed
         if self.paused:
@@ -97,6 +125,7 @@ class Snake:
         new_head = ((head[0] + self.direction[0]) % GRID_WIDTH,
                     (head[1] + self.direction[1]) % GRID_HEIGHT)
 
+        # Столкновение с собой или стеной
         if new_head in self.body[1:] or new_head in walls:
             return False
 
@@ -111,14 +140,17 @@ class Snake:
             self.body.pop()
         return True
 
+    # Смена направления
     def change_direction(self, direction):
         if (direction[0] * -1, direction[1] * -1) != self.direction:
             self.direction = direction
 
+    # Сохраняем прогресс вручную
     def save_progress(self):
         save_score(self.user_id, score, level)
         print(f"Прогресс {self.player_name} сохранён!")
 
+# --- Класс Еда ---
 class Food:
     def __init__(self):
         self.position = (0, 0)
@@ -131,22 +163,22 @@ class Food:
                 self.position = pos
                 break
 
-# Начальные стены
+# --- Создание стен по краям поля ---
 walls = [(0, i) for i in range(GRID_HEIGHT)] + [(GRID_WIDTH - 1, i) for i in range(GRID_HEIGHT)] + \
         [(i, 0) for i in range(GRID_WIDTH)] + [(i, GRID_HEIGHT - 1) for i in range(GRID_WIDTH)]
 
-# Инициализация змейки и игрока
+# --- Инициализация объектов ---
 snake = Snake()
-loaded_level = snake.get_player_name()
+loaded_level = snake.get_player_name()  # загружаем имя и уровень
 food = Food()
+score, level, speed = 0, loaded_level, 10 + (loaded_level - 1) * 2  # настройка скорости
 
-score, level, speed = 0, loaded_level, 10 + (loaded_level - 1) * 2
-
-# Главный цикл игры
+# --- Главный игровой цикл ---
 clock = pygame.time.Clock()
 running = True
 while running:
     screen.fill(BLACK)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -159,19 +191,22 @@ while running:
                 snake.change_direction((-1, 0))
             elif event.key == pygame.K_RIGHT:
                 snake.change_direction((1, 0))
-            elif event.key == pygame.K_SPACE:
+            elif event.key == pygame.K_SPACE:  # пауза
                 snake.paused = not snake.paused
-            elif event.key == pygame.K_s:
+            elif event.key == pygame.K_s:      # ручное сохранение
                 snake.save_progress()
 
     if not snake.move():
-        running = False
+        running = False  # если проиграл — выходим из игры
 
+    # Отрисовка змейки
     for segment in snake.body:
         pygame.draw.rect(screen, WHITE, (segment[0] * GRID_SIZE, segment[1] * GRID_SIZE, GRID_SIZE, GRID_SIZE))
 
+    # Отрисовка еды
     pygame.draw.rect(screen, RED, (food.position[0] * GRID_SIZE, food.position[1] * GRID_SIZE, GRID_SIZE, GRID_SIZE))
 
+    # Вывод счёта и уровня
     font = pygame.font.SysFont(None, 25)
     text = font.render(f"Счёт: {score}   Уровень: {level}", True, WHITE)
     screen.blit(text, (10, 10))
@@ -179,7 +214,7 @@ while running:
     pygame.display.flip()
     clock.tick(speed)
 
-# Сохраняем прогресс при выходе
+# --- Сохраняем при выходе из игры ---
 snake.save_progress()
 pygame.quit()
 conn.close()

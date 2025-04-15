@@ -15,12 +15,14 @@ RED   = (255, 0, 0)
 class DBManager:
     def __init__(self):
         # Подключаемся к базе данных PostgreSQL
+        
         self.conn = psycopg2.connect(
             dbname='snake',
             user='postgres',
             password='12345678',
             host='localhost'
         )
+        
         self.cursor = self.conn.cursor()
         self.create_tables()
     
@@ -32,6 +34,8 @@ class DBManager:
                 user_name VARCHAR(255) UNIQUE
             );
         """)
+        
+        
         # Создаем таблицу для сохранения результатов
         self.cursor.execute("""
             CREATE TABLE IF NOT EXISTS user_score (
@@ -70,7 +74,7 @@ class DBManager:
         self.cursor.close()
         self.conn.close()
 
-# --- Класс для еды ---
+#  Класс для еды 
 class Food:
     def __init__(self, snake, walls):
         self.snake = snake
@@ -86,7 +90,7 @@ class Food:
                 self.position = pos
                 break
 
-# --- Класс для змейки ---
+# Класс для змейки 
 class Snake:
     def __init__(self, db_manager):
         self.body = [(GRID_WIDTH // 2, GRID_HEIGHT // 2)]
@@ -172,13 +176,13 @@ class Snake:
         self.db_manager.save_score(self.user_id, score, level)
         print(f"Прогресс игрока {self.player_name} сохранён!")
 
-# --- Функция создания стен по краям поля ---
+# Функция создания стен по краям поля 
 def create_walls():
     walls = [(0, i) for i in range(GRID_HEIGHT)] + [(GRID_WIDTH - 1, i) for i in range(GRID_HEIGHT)]
     walls += [(i, 0) for i in range(GRID_WIDTH)] + [(i, GRID_HEIGHT - 1) for i in range(GRID_WIDTH)]
     return walls
 
-# --- Основной блок выполнения ---
+#  Основной блок выполнения
 def main():
     global score, level, speed, screen
 

@@ -150,7 +150,7 @@ class Snake:
         save_score(self.user_id, score, level)
         print(f"Прогресс {self.player_name} сохранён!")
 
-# --- Класс Еда ---
+# Класс Еда
 class Food:
     def __init__(self):
         self.position = (0, 0)
@@ -163,11 +163,11 @@ class Food:
                 self.position = pos
                 break
 
-# --- Создание стен по краям поля ---
+#  Создание стен по краям поля 
 walls = [(0, i) for i in range(GRID_HEIGHT)] + [(GRID_WIDTH - 1, i) for i in range(GRID_HEIGHT)] + \
         [(i, 0) for i in range(GRID_WIDTH)] + [(i, GRID_HEIGHT - 1) for i in range(GRID_WIDTH)]
 
-# --- Инициализация объектов ---
+# Инициализация объектов 
 snake = Snake()
 loaded_level = snake.get_player_name()  # загружаем имя и уровень
 food = Food()
@@ -214,7 +214,6 @@ while running:
     pygame.display.flip()
     clock.tick(speed)
 
-# --- Сохраняем при выходе из игры ---
 snake.save_progress()
 pygame.quit()
 conn.close()

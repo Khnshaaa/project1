@@ -1,4 +1,3 @@
-# phonebook.py с комментариями для лучшего понимания
 
 import psycopg2  # библиотека для работы с PostgreSQL
 import csv       # библиотека для чтения CSV файлов

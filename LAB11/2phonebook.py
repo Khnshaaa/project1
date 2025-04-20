@@ -56,8 +56,8 @@ def update_user():
 
 # Delete user by name or phone
 def delete_user():
-    key = input("Enter name or phone number to delete: ")
-    cur.execute("DELETE FROM Users WHERE user_name = %s OR user_phone = %s", (key, key))
+    key = input("Enter name or phone number  or id  to delete: ")
+    cur.execute("DELETE FROM Users WHERE user_name = %s OR user_phone = %s OR user_id = %s " , (key, key , key ))
     conn.commit()
     print("User deleted.")
 
